@@ -33,8 +33,22 @@ CREATE TABLE IF NOT EXISTS EXISTER(
 
 CREATE TABLE IF NOT EXISTS COMPTE(
    idCompte VARCHAR(20),
-   mdpCompte VARCHAR(30)
+   mdpCompte VARCHAR(255)
 );
+
+CREATE TABLE COMMANDE(
+    codeCom INT PRIMARY KEY AUTO_INCREMENT,
+    prixTotal DECIMAL(5,2),
+    idCompte VARCHAR(20) REFERENCES COMPTE(idCompte)
+);
+
+CREATE TABLE QUANTITE_COMMANDE(
+    codeCom INT REFERENCES COMMANDE(codeCom),
+    refProduit VARCHAR(4) REFERENCES PRODUITS(refProduit),
+    quantite INT,
+    PRIMARY KEY(codeCom, refProduit)
+);
+
 
 
 ALTER TABLE PRODUIT
@@ -51,6 +65,7 @@ ALTER TABLE EXISTER
 ADD CONSTRAINT fk_allergene_exister_idA
 FOREIGN KEY (idA) 
 REFERENCES ALLERGENE(idA);
+
 
 
 INSERT INTO CATEGORIE 
@@ -131,13 +146,3 @@ VALUES
 ("S003", 1, 1, 0),
 ("S003", 12, 1, 0),
 ("S003", 13, 0, 1);
-
-INSERT INTO COMPTE 
-(idCompte, mdpCompte)
-VALUES
--- Compte visiteur
-("Visiteur", "azerty67000$"),
--- Compte de Mme Keller
-("MmeKeller", "querty67000$");
-
-
